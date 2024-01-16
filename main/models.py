@@ -25,7 +25,7 @@ class Product(models.Model):
     data_last_add = models.DateTimeField(**NULLABLE, verbose_name='дата последнего изменения')
 
     def __str__(self):
-        return f'{self.name} {self.description}{self.image}{self.category}{self.price}{self.data_create}{self.data_last_add}'
+        return f'{self.name} {self.description}{self.image}{self.category}{self.price}'
 
     class Meta:
         verbose_name = 'продукт'
