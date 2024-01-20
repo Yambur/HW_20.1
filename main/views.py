@@ -8,4 +8,7 @@ def index(request):
     context = {
         'objects_list': product_list
     }
-    return render(request, 'main/index.html')
+    return render(request, 'main/index.html', context)
+
+def contact(request):
+    pass
