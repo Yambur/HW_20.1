@@ -1,14 +1,21 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from main.models import Product, Contact
 
+class IndexView(TemplateView):
+    template_name = 'main/index.html'
+    product_list = Product.objects.all()
+    extra_context = {
+        'objects_list': product_list
+    }
 
-def index(request):
+"""def index(request):
     product_list = Product.objects.all()
     context = {
         'objects_list': product_list
     }
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/index.html', context)"""
 
 
 def contacts(request):
