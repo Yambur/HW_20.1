@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, CreateView
 
-from main.models import Product, Contact
+from main.models import Product, Contact, Blog
 
 
 class IndexView(TemplateView):
@@ -10,28 +11,6 @@ class IndexView(TemplateView):
     extra_context = {
         'objects_list': product_list
     }
-
-
-# оставил для примера
-# def index(request):
-#    product_list = Product.objects.all()
-#    context = {
-#    'objects_list': product_list
-#    }
-#    return render(request, 'main/index.html', context)
-
-
-"""def contacts(request):
-    company_info = Contact.objects.all()
-    info_content = {
-        'info_list': company_info
-    }
-    if request.method == "POST":
-        name = request.POST.get("name")
-        phone = request.POST.get("phone")
-        message = request.POST.get("message")
-        print(f"{name} ({phone}): {message}")
-    return render(request, "main/contacts.html", info_content)"""
 
 
 class ContactsView(TemplateView):
@@ -49,3 +28,19 @@ class ContactsView(TemplateView):
         company_info = Contact.objects.all()
         context['info_list'] = company_info
         return context
+
+class BlogListView(ListView):
+    model = Blog
+    template_name = 'main/blog.html'
+    extra_context = {
+        'title': 'Блог для всей семьи'
+    }
+
+class BlogCreateView(CreateView):
+    model = Blog
+    fields =('name', 'message')
+    success_url = reverse_lazy('main:blog')
+
+"""class BlogView(TemplateView):
+    template_name = 'main/blog.html'
+    blog_list ="""
