@@ -21,7 +21,7 @@
                     <div class="card_footer">
                         <a class="btn btn-outline-success" href="{% url 'main:blog_detail' object.pk %}">Посмотреть</a>
                         <a class="btn btn-outline-success" href="{% url 'main:blog_update' object.pk %}">Изменить</a>
-                        <a class="btn btn-outline-danger float-right" href="#">Удалить</a>
+                        <a class="btn btn-outline-danger float-right" href="{% url 'main:blog_delete' object.pk %}">Удалить</a>
                     </div>
                 </div>
             </div>
