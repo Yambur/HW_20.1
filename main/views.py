@@ -1,24 +1,59 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from main.models import Product, Contact
+from main.models import Product, Contact, Blog
 
 
-def index(request):
+class IndexView(TemplateView):
+    template_name = 'main/index.html'
     product_list = Product.objects.all()
-    context = {
+    extra_context = {
         'objects_list': product_list
     }
-    return render(request, 'main/index.html', context)
 
 
-def contacts(request):
-    company_info = Contact.objects.all()
-    info_content = {
-        'info_list': company_info
-    }
-    if request.method == "POST":
+class ContactsView(TemplateView):
+    template_name = "main/contacts.html"
+
+    def post(self, request, *args, **kwargs):
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         message = request.POST.get("message")
         print(f"{name} ({phone}): {message}")
-    return render(request, "main/contacts.html", info_content)
+        return self.render_to_response(self.get_context_data())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company_info = Contact.objects.all()
+        context['info_list'] = company_info
+        return context
+
+
+class BlogListView(ListView):
+    model = Blog
+
+
+class BlogCreateView(CreateView):
+    model = Blog
+    fields = ('name', 'message')
+    success_url = reverse_lazy('main:blog')
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        return self.object
+
+
+class BlogUpdateView(UpdateView):
+    model = Blog
+    fields = ('name', 'message')
+    success_url = reverse_lazy('main:blog')
+
+
+class BlogDeleteView(DeleteView):
+    model = Blog
+    success_url = reverse_lazy('main:blog')
