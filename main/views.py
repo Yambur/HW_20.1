@@ -49,4 +49,6 @@ class BlogDetailView(DetailView):
 
 
 class BlogUpdateView(UpdateView):
-    pass
+    model = Blog
+    fields = ('name', 'message')
+    success_url = reverse_lazy('main:blog')
