@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView
 
 from main.models import Product, Contact, Blog
 
@@ -29,18 +29,24 @@ class ContactsView(TemplateView):
         context['info_list'] = company_info
         return context
 
+
 class BlogListView(ListView):
     model = Blog
-    template_name = 'main/blog.html'
-    extra_context = {
-        'title': 'Блог для всей семьи'
-    }
+
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields =('name', 'message')
+    fields = ('name', 'message')
     success_url = reverse_lazy('main:blog')
 
-"""class BlogView(TemplateView):
-    template_name = 'main/blog.html'
-    blog_list ="""
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        return self.object
+
+
+class BlogUpdateView(UpdateView):
+    pass
