@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
-
+from pytils.translit import slugify
 from main.models import Product, Contact, Blog
 
 
@@ -33,11 +33,24 @@ class ContactsView(TemplateView):
 class BlogListView(ListView):
     model = Blog
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(public=True)
+        return queryset
+
 
 class BlogCreateView(CreateView):
     model = Blog
     fields = ('name', 'message')
     success_url = reverse_lazy('main:blog')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_blog = form.save()
+            new_blog.slug = slugify(new_blog.name)
+            new_blog.save()
+
+        return super().form_valid(form)
 
 
 class BlogDetailView(DetailView):
@@ -54,6 +67,14 @@ class BlogUpdateView(UpdateView):
     model = Blog
     fields = ('name', 'message')
     success_url = reverse_lazy('main:blog')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_blog = form.save()
+            new_blog.slug = slugify(new_blog.name)
+            new_blog.save()
+
+        return super().form_valid(form)
 
 
 class BlogDeleteView(DeleteView):
