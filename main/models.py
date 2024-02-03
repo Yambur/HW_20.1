@@ -54,6 +54,7 @@ class Blog(models.Model):
     public = models.BooleanField(default=True, verbose_name='Опубликовано')
     views_count = models.IntegerField(default=0, verbose_name='Просмотры')
 
+
     def __str__(self):
         return f'{self.name} {self.message} {self.views_count}'
     class Meta:

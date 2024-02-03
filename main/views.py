@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 from pytils.translit import slugify
+
 from main.models import Product, Contact, Blog
 
 
@@ -83,3 +84,14 @@ class BlogUpdateView(UpdateView):
 class BlogDeleteView(DeleteView):
     model = Blog
     success_url = reverse_lazy('main:blog')
+
+
+def toggle_activity(request, pk):
+    blog_item = get_object_or_404(Blog, pk=pk)
+    if blog_item.public:
+        blog_item.public = False
+    else:
+        blog_item.public = True
+
+    blog_item.save()
+    return redirect(reverse('main:blog'))
