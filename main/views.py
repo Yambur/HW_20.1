@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 from pytils.translit import slugify
 from main.models import Product, Contact, Blog
@@ -75,6 +75,9 @@ class BlogUpdateView(UpdateView):
             new_blog.save()
 
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('main:blog_detail', args=[self.kwargs.get('pk')])
 
 
 class BlogDeleteView(DeleteView):
