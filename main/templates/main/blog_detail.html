@@ -13,7 +13,7 @@
                     <table class="table">
                         <tr>
                             <td>Название</td>
-                            <td>{{object.name}}</td>
+                            <td>{{object.name}} ({{ object.slug }})</td>
                         </tr>
                         <tr>
                             <td>Содержание</td>
@@ -21,7 +21,11 @@
                         </tr>
                     </table>
                 </div>
+                <div class="card-footer">
+                    Просмотры: {{ object.views_count }}
+                </div>
             </div>
+            <a class="btn btn-primary" href=" {% url 'main:blog' %}">Назад</a>
         </div>
     </div>
 </div>

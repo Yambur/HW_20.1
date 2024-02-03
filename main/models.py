@@ -47,12 +47,13 @@ class Contact(models.Model):
 
 class Blog(models.Model):
     name = models.CharField(max_length=150, verbose_name="Заголовок", **NULLABLE)
-    slug = models.CharField(max_length=100, verbose_name="Какой то slug", **NULLABLE)
+    slug = models.CharField(max_length=100, verbose_name="slug", **NULLABLE)
     message = models.TextField(max_length=200, verbose_name='Содержимое', **NULLABLE)
     image = models.ImageField(upload_to='main/', **NULLABLE, verbose_name="Фото")
     date_create = models.DateTimeField(**NULLABLE, verbose_name='Дата создания')
-    public = models.BooleanField(default=True, **NULLABLE)
-    views_count = models.IntegerField(**NULLABLE, verbose_name='Просмотры')
+    public = models.BooleanField(default=True, verbose_name='Опубликовано')
+    views_count = models.IntegerField(default=0, verbose_name='Просмотры')
+
 
     def __str__(self):
         return f'{self.name} {self.message} {self.views_count}'
