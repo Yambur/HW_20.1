@@ -3,16 +3,48 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 from pytils.translit import slugify
 
-from main.models import Product, Contact, Blog
+from main.forms import ProductForm
+from main.models import Product, Contact, Blog, Category
 
 
 class IndexView(TemplateView):
     template_name = 'main/index.html'
     product_list = Product.objects.all()
     extra_context = {
-        'objects_list': product_list
+        'objects_list': product_list,
     }
 
+class ProductListView(ListView):
+    model = Product
+
+    """def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(category_id=self.kwargs.get('pk'))
+        return queryset
+
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+        context_data['category_pk'] = category_item.pk
+        context_data['title'] = f'Все наши {category_item.category_name}'
+
+        return context_data"""
+
+
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_model = ProductForm
+    success_url = reverse_lazy('main:product_list.html')
+
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_model = ProductForm
+    success_url = reverse_lazy('main:product_list.html')
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"
