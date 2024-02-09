@@ -48,6 +48,7 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     form_model = ProductForm
+    fields = ('name', 'description', 'category', 'price',)
     #success_url = reverse_lazy('main:category_list')
 
 
