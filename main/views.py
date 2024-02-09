@@ -22,6 +22,17 @@ class CategoryListView(ListView):
     }
 
 
+class CategoryDetailView(DetailView):
+    model = Category
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data()
+        products = Product.objects.filter(category=self.object)
+        context_data['title'] = 'Продукты категории'
+        context_data['products'] = products
+        return context_data
+
+
 class ProductListView(ListView):
     model = Product
 
@@ -30,32 +41,29 @@ class ProductListView(ListView):
         queryset = queryset.filter(category_id=self.kwargs.get('pk'))
         return queryset
 
-
     def get_context_data(self, *args, **kwargs):
-        context_data = super().get_context_data(*args, **kwargs)
-
+        context_data = super().get_context_data()
         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
         context_data['category_pk'] = category_item.pk
-        context_data['title'] = f'Все наши {category_item.name}'
-
+        context_data['title'] = f'Все наши товары категории {category_item.name}'
         return context_data
-
-class ProductDetailView(DetailView):
-    model = Product
-    success_url = reverse_lazy('main:category_list')
 
 
 class ProductCreateView(CreateView):
     model = Product
-    form_model = ProductForm
-    fields = ('name', 'description', 'category', 'price',)
-    #success_url = reverse_lazy('main:category_list')
+    form_class = ProductForm
+    success_url = reverse_lazy('main:category_list')
+
+
+class ProductDetailView(DetailView):
+    model = Product
 
 
 class ProductUpdateView(UpdateView):
     model = Product
-    form_model = ProductForm
+    form_class = ProductForm
     success_url = reverse_lazy('main:category_list')
+
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"
@@ -96,7 +104,6 @@ class BlogCreateView(CreateView):
             new_blog = form.save()
             new_blog.slug = slugify(new_blog.name)
             new_blog.save()
-
         return super().form_valid(form)
 
 

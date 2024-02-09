@@ -1,28 +1,28 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<form method="post" class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                {% if object %}
-                Редактирование продукта
-                {% else %}
-                Добавление продукта
-                {% endif %}
-            </div>
-            <div class="card-body">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-outline-success">
+    <form method="post" class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
                     {% if object %}
-                    Сохранить
+                        Редактирование продукта
                     {% else %}
-                    Добавить
+                        Добавление продукта
                     {% endif %}
-                </button>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-outline-success">
+                        {% if object %}
+                            Сохранить
+                        {% else %}
+                            Добавить
+                        {% endif %}
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 {% endblock %}
