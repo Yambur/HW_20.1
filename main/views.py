@@ -14,10 +14,18 @@ class IndexView(TemplateView):
         'objects_list': product_list,
     }
 
+
+class CategoryListView(ListView):
+    model = Category
+    extra_context = {
+        'title': 'Категории продуктов'
+    }
+
+
 class ProductListView(ListView):
     model = Product
 
-    """def get_queryset(self):
+    def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(category_id=self.kwargs.get('pk'))
         return queryset
@@ -25,26 +33,28 @@ class ProductListView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
+
         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
         context_data['category_pk'] = category_item.pk
-        context_data['title'] = f'Все наши {category_item.category_name}'
+        context_data['title'] = f'Все наши {category_item.name}'
 
-        return context_data"""
+        return context_data
 
-
+class ProductDetailView(DetailView):
+    model = Product
+    success_url = reverse_lazy('main:category_list')
 
 
 class ProductCreateView(CreateView):
     model = Product
     form_model = ProductForm
-    success_url = reverse_lazy('main:product_list.html')
-
+    success_url = reverse_lazy('main:category_list')
 
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_model = ProductForm
-    success_url = reverse_lazy('main:product_list.html')
+    success_url = reverse_lazy('main:category_list')
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"
@@ -65,6 +75,9 @@ class ContactsView(TemplateView):
 
 class BlogListView(ListView):
     model = Blog
+    extra_context = {
+        'title': 'Личный блог'
+    }
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
