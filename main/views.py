@@ -48,14 +48,13 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     form_model = ProductForm
-    success_url = reverse_lazy('main:category_list.html')
-
+    success_url = reverse_lazy('main:category_list')
 
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_model = ProductForm
-    success_url = reverse_lazy('main:category_list.html')
+    success_url = reverse_lazy('main:category_list')
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"

@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="col-12">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Информация о продукте
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td>Название</td>
+                            <td>{{ object.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>О продукте</td>
+                            <td>{{ object.description }}</td>
+                        </tr>
+                        <tr>
+                            <td>Цена</td>
+                            <td>{{ object.price }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <a class="btn btn-warning-outline" href=" {% url 'main:product_list' object.pk %}">Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
