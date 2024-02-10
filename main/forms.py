@@ -1,7 +1,12 @@
 from django import forms
 
-from main.models import Product
+from main.models import Product, Version
 
+
+class VersionForm(forms.ModelForm):
+    class Meta:
+        model = Version
+        fields = '__all__'
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -9,18 +14,21 @@ class ProductForm(forms.ModelForm):
         #fields = '__all__'
         fields = ('name', 'description', 'category', 'price',)
 
-
-    """def clean_name(self):
-        cleaned_data = super().clean()
-        name = cleaned_data.get('name')
-        description = cleaned_data.get('description')
-
-        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
-
+    def clean_name(self):
+        cleaned_data = self.cleaned_data.get('name')
+        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
+                           'радар']
         for word in forbidden_words:
-            if word in name.lower():
-                self.add_error('name', f'Название продукта не может содержать слово "{word}"')
-            if word in description.lower():
-                self.add_error('description', f'Описание продукта не может содержать слово "{word}"')
+            if word in cleaned_data.lower():
+                raise forms.ValidationError('Введено запрещенное к использованию слово')
 
-        return cleaned_data"""
+        return cleaned_data
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data.get('description')
+        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция','радар']
+        for word in forbidden_words:
+            if word in cleaned_data.lower():
+                raise forms.ValidationError(f'Название продукта не может содержать слово "{word}"')
+
+        return cleaned_data
