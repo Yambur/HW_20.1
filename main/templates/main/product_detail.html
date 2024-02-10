@@ -5,6 +5,12 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                    {% for version in product.version_set.all %}
+                    {% if version.is_active_version %}
+                    <p>Версия: {{version.number_version}} Название: {{version.name_version}}</p>
+                    {% endif %}
+                    {% endfor %}
                     <h3 class="card-title">
                         Информация о продукте
                     </h3>
