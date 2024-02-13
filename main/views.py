@@ -60,7 +60,7 @@ class ProductCreateView(CreateView):
         context_data['formset'] = formset
         return context_data"""
 
-    """def form_valid(self, form):
+    def form_valid(self, form):
         context_data = self.get_context_data()
         formset = context_data['formset']
         self.object = form.save()
@@ -68,7 +68,7 @@ class ProductCreateView(CreateView):
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
-        return super().form_valid(form)"""
+        return super().form_valid(form)
 
 
 class ProductDetailView(DetailView):
