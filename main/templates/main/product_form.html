@@ -33,7 +33,11 @@
             <div class="card-body">
                 {{ formset.management_form }}
                 {% for form in formset.forms %}
-                    {{ form.as_p }}
+                {% if object.version %}
+                <p>У этого продукта уже есть версия: {{ object.version }}</p>
+                {% else %}
+                {{ form.as_p }}
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
