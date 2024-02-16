@@ -5,5 +5,12 @@
         <li><a href="{% url 'main:category_list' %}" class="text-white">Продукты</a></li>
         <li><a href="{% url 'main:contacts' %}" class="text-white">Контакты</a></li>
         <li><a href="{% url 'main:blog' %}" class="text-white">Блог</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="#" class="text-white">Профиль</a></li>
+        <li><a href="{% url 'users:logout'  %}" class="text-white">Выйти</a></li>
+        {% else %}
+        <li><a href="{% url 'users:login'  %}" class="text-white">Войти</a></li>
+        <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
+        {% endif %}
     </ul>
 </div>

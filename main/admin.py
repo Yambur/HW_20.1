@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 from main.models import Category, Product, Blog, Version
+from users.models import User
 
+admin.site.register(User)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
