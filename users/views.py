@@ -2,13 +2,13 @@ from django.conf import settings
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 import secrets
-from users.forms import RegisterUserForm
+from users.forms import RegisterUserForm, UserForm
 from users.models import User
 
 
@@ -57,3 +57,12 @@ class ValidEmailView(View):
             return redirect('users:login')
         else:
             return redirect('main:index')
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    success_url = reverse_lazy('users:profile')
+    form_class = UserForm
+
+    def get_object(self, queryset=None):
+        return self.request.user

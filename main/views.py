@@ -10,7 +10,7 @@ from main.models import Product, Contact, Blog, Category, Version
 
 class IndexView(TemplateView):
     template_name = 'main/index.html'
-    product_list = Product.objects.all()
+    product_list = Product.objects.all()[:4]
     extra_context = {
         'objects_list': product_list,
     }
