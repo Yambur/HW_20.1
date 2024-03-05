@@ -10,7 +10,7 @@ from main.models import Product, Contact, Blog, Category, Version
 
 class IndexView(TemplateView):
     template_name = 'main/index.html'
-    product_list = Product.objects.all()
+    product_list = Product.objects.all()[:4]
     extra_context = {
         'objects_list': product_list,
     }
@@ -48,6 +48,16 @@ class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('main:category_list')
+    permission_required = 'main.can_create_products'
+
+
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
 
 
 
@@ -84,7 +94,7 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('main:category_list')
-
+    permission_required = 'main.can_create_products'
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"
