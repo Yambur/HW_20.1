@@ -20,8 +20,11 @@ class VersionForm(StyleForMixin, forms.ModelForm):
 class ProductForm(StyleForMixin, forms.ModelForm):
     class Meta:
         model = Product
-        # fields = '__all__'
-        fields = ('name', 'description', 'category', 'price',)
+        exclude = ('owner', )
+        permission_required = 'main.can_create_products'
+
+        #fields = '__all__'
+        #fields = ('name', 'description', 'category', 'price',)
 
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')

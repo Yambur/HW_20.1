@@ -48,6 +48,16 @@ class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('main:category_list')
+    permission_required = 'main.can_create_products'
+
+
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
 
 
 
@@ -84,7 +94,7 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('main:category_list')
-
+    permission_required = 'main.can_create_products'
 
 class ContactsView(TemplateView):
     template_name = "main/contacts.html"
