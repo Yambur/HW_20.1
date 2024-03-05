@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 
@@ -66,3 +66,18 @@ class UserUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+def generate_new_password(request):
+    user = request.user
+    new_pass = User.objects.make_random_password()
+    user.set_password(new_pass)
+    user.save()
+
+    send_mail(
+        subject='Поздравляем с изменением пароля',
+        message='Ваш новый пароль: {}'.format(new_pass),
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[user.email]
+    )
+
+    return redirect(reverse('users:login'))
