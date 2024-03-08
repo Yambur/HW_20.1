@@ -3,7 +3,9 @@
 {% block content %}
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     <div class="col-12">
+        {% if user.is_authenticated %}
         <a href="{% url 'main:product_create'  %}" class="btn btn-primary">Создать продукт</a>
+        {% endif %}
     </div>
     {% for object in object_list %}
     <div class="col">
